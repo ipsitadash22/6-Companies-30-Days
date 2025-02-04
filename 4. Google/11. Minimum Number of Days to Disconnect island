@@ -1,0 +1,93 @@
+class Solution {
+    public int minDays(int[][] grid) {
+        int n = grid.length;
+        int m = grid[0].length;
+        
+        if(isValid(grid)){
+            return 0;
+        }
+
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<m ; j++){
+                if(grid[i][j] == 1){
+                    grid[i][j] = 0;
+                    if(isValid(grid)){
+                        return 1;
+                    }
+                    grid[i][j] = 1;
+                }
+            }
+        }
+
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<m ; j++){
+                if(grid[i][j] == 1){
+                    grid[i][j] = 0;
+                    if(isValid(grid)){
+                        return 1;
+                    }
+                    grid[i][j] = 1;
+                }
+            }
+        }
+
+        int island = 0;
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<m ; j++){
+                if(grid[i][j] == 1){
+                    grid[i][j] = 0;
+
+                    for(int x=0 ; x<n ; x++){
+                        for(int y=0 ; y<m ; y++){
+                            if(grid[i][j] == 1){
+                                grid[i][j] = 0;
+                                if(isValid(grid)){
+                                    island++;
+                                }
+                                grid[i][j] = 1;
+                            }
+                        }
+                    }
+                    grid[i][j] = 1;
+                }
+            }
+        }
+
+        return 2;
+    }
+
+    public boolean isValid(int[][] grid){
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean[][] visited = new boolean[n][m];
+        int island = 0;
+        for(int i=0 ; i<n ; i++){
+            for(int j=0 ; j<m ; j++){
+                if(grid[i][j] == 1 && !visited[i][j]){
+                    island++;
+                    if(island > 1){
+                        return true;
+                    }
+                    dfs(grid , i , j , visited);
+                }
+            }
+        }
+
+        return island == 0;
+    }
+
+    public void dfs(int[][] grid , int row , int col , boolean[][] visited){
+        int n = grid.length;
+        int m = grid[0].length;
+
+        if(row <0 || row >= n || col<0 || col>=m || grid[row][col] != 1 || visited[row][col]){
+            return;
+        }
+        visited[row][col] = true;
+
+        dfs(grid , row-1 , col , visited);
+        dfs(grid , row , col-1 , visited);
+        dfs(grid , row+1 , col , visited);
+        dfs(grid , row , col+1 , visited);
+    }
+}

@@ -1,0 +1,25 @@
+class Solution {
+    public int maxSubarrayLength(int[] nums, int k) {
+        if(k == nums.length){
+            return nums.length;
+        }
+        HashMap<Integer , Integer> map = new HashMap<>();
+        int maxLength = 0;
+        int left = 0;
+        for(int right = 0 ; right < nums.length ; right++){
+            map.put(nums[right] , map.getOrDefault(nums[right] , 0) + 1);
+
+            while(map.get(nums[right]) > k){
+                map.put(nums[left] , map.getOrDefault(nums[left] , 0) - 1);
+                if(map.get(nums[left]) == 0){
+                    map.remove(nums[left]);
+                }
+                left++;
+            }
+
+            maxLength = Math.max(maxLength , right-left+1);
+        }
+
+        return maxLength == Integer.MIN_VALUE ? 0 : maxLength;
+    }
+}

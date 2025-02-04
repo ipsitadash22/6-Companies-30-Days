@@ -1,0 +1,19 @@
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        String[] arr = preorder.split(",");
+        int slot = 1;
+
+        for(String num : arr){
+            slot--;
+            if(slot < 0){
+                return false;
+            }
+
+            if(!num.equals("#")){
+                slot+=2;
+            }
+        }
+
+        return slot == 0;
+    }
+}

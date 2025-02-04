@@ -1,0 +1,34 @@
+class Solution {
+    public int countBattleships(char[][] board) {
+       int n = board.length;
+       int m = board[0].length; 
+       boolean[][] visited = new boolean[n][m];
+       int battleShips = 0;
+
+       for(int i=0 ; i<n ; i++){
+          for(int j=0 ; j<m ; j++){
+             if(board[i][j] == 'X' && !visited[i][j]){
+                battleShips++;
+                dfs(board , visited , i , j);
+             }
+          }
+       }   
+
+       return battleShips;    
+    }
+    public void dfs(char[][] board , boolean[][] visited , int row ,int col){
+        int n = board.length;
+        int m = board[0].length;
+
+        if(row < 0 || row >= n || col < 0 || col >= m || board[row][col] != 'X' || visited[row][col]){
+            return;
+        }
+
+        visited[row][col] = true;
+
+        dfs(board , visited , row-1 , col);
+        dfs(board , visited , row , col-1);
+        dfs(board , visited , row+1 , col); 
+        dfs(board , visited , row , col+1);
+    }
+}

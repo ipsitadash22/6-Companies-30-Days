@@ -1,0 +1,57 @@
+class Solution {
+    public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+        long l = 1;
+        long r = (long) 1e15;
+        long ans = r;
+        long d1 = divisor1;
+        long d2 = divisor2;
+        long cnt1 = uniqueCnt1;
+        long cnt2 = uniqueCnt2;
+        long lcm = lcm(d1, d2);
+
+        while (l <= r) {
+            long mid = l + (r - l) / 2;
+
+            if (d1 == d2) {
+                long cnt = mid - (mid / d1);
+
+                if (cnt >= cnt1 + cnt2) {
+                    ans = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                long common = mid / lcm;
+                long c1 = mid / d1 - common;
+                long c2 = mid / d2 - common;
+
+                long z1 = cnt1;
+                long z2 = cnt2;
+                long avail = mid - (c1 + c2 + common);
+
+                z1 -= Math.min(z1, c2);
+                z2 -= Math.min(z2, c1);
+
+                if (z1 + z2 <= avail) {
+                    ans = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+        }
+        return (int) ans;
+    }
+
+    public long gcd(long d1, long d2) {
+        if (d2 == 0) {
+            return d1;
+        }
+        return gcd(d2, d1 % d2);
+    }
+
+    public long lcm(long a, long b) {
+        return  (a * b) / gcd(a, b);
+    }
+}

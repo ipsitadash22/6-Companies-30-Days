@@ -1,0 +1,20 @@
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        int n = s.length();
+        HashSet<String> set = new HashSet<>();
+        HashSet<String> repeat = new HashSet<>();
+
+        int left = 0;
+        int right = 10;
+        while(right <= n){
+            if(set.contains(s.substring(left , right))){
+                repeat.add(s.substring(left , right));
+            }
+            set.add(s.substring(left , right));
+            left++;
+            right++;
+        }
+
+        return new ArrayList<>(repeat);
+    }
+}

@@ -1,0 +1,23 @@
+class Solution {
+    int MOD = (int)(1e9 + 7);
+
+    public int minNonZeroProduct(int p) {
+        long maxElement = (1L << p) - 1; // Largest element: 2^p - 1
+        long power = (maxElement - 1) / 2; // Power for exponentiation
+        long base = maxElement - 1; // (2^p - 2) is the base
+        
+        return (int) (fastPower(base, power, MOD) * (maxElement % MOD) % MOD);
+    }
+
+    private long fastPower(long base, long exp, int mod) {
+        long result = 1;
+        while (exp > 0) {
+            if ((exp & 1) == 1) { // If exp is odd, multiply base
+                result = (result * base) % mod;
+            }
+            base = (base * base) % mod; // Square base
+            exp >>= 1; // Divide exponent by 2
+        }
+        return result;
+    }
+}

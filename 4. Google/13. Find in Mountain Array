@@ -1,0 +1,80 @@
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ * public int get(int index) {}
+ * public int length() {}
+ * }
+ */
+
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int n = mountainArr.length();
+        if(n <=2){
+            return -1;
+        }
+
+        int mid = PeakIndex(mountainArr);
+
+        int indexLeft = binarySearchAsc(mountainArr , 0 , mid , target);
+        if(indexLeft != -1){
+            return indexLeft;
+        }
+        return binarySearchDec(mountainArr , mid+1 , n-1 , target);
+    }
+
+    public int PeakIndex(MountainArray mountainArr){
+        int left = 0;
+        int right = mountainArr.length()-1;
+
+        while(left < right){
+            int mid = left + (right - left)/2;
+
+            if(mountainArr.get(mid) < mountainArr.get(mid+1)){
+                left = mid+1;
+            }else{
+                right = mid;
+            }
+        }
+
+        return left;
+    }
+
+    public int binarySearchAsc(MountainArray mountainArr , int i , int j , int target){
+        int left = i;
+        int right = j;
+
+        while(left <= right){
+            int mid = left + (right - left)/2;
+
+            if(mountainArr.get(mid) == target){
+                return mid;
+            }else if(mountainArr.get(mid) < target){
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+
+        return -1;
+    }
+
+    public int binarySearchDec(MountainArray mountainarr , int i , int j , int target){
+        int left = i;
+        int right = j;
+
+        while(left <= right){
+            int mid = left + (right-left)/2;
+            
+            if(mountainarr.get(mid) == target){
+                return mid;
+            }else if(mountainarr.get(mid) > target){
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+        }
+
+        return -1;
+    }
+}

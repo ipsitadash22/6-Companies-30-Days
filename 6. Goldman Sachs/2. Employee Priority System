@@ -1,0 +1,33 @@
+import java.util.*;
+
+class Solution {
+    public List<String> findHighAccessEmployees(List<List<String>> access_times) {
+        // Group access times by employee
+        HashMap<String, List<Integer>> map = new HashMap<>();
+        for (List<String> list : access_times) {
+            String employee = list.get(0);
+            int time = Integer.parseInt(list.get(1));
+            map.computeIfAbsent(employee, k -> new ArrayList<>()).add(time);
+        }
+
+        // List to store employees with high access
+        List<String> result = new ArrayList<>();
+
+        // Check each employee's access times
+        for (String employee : map.keySet()) {
+            List<Integer> times = map.get(employee);
+            if (times.size() < 3) continue; // Skip if less than 3 accesses
+            
+            Collections.sort(times);
+            for (int i = 0; i <= times.size() - 3; i++) {
+                // Check if three consecutive times fall within less than 60 minutes
+                if (times.get(i)+100 > times.get(i+1) && times.get(i)+100 > times.get(i+2)) {
+                    result.add(employee);
+                    break; // Stop checking further for this employee
+                }
+            }
+        }
+
+        return result;
+    }
+}

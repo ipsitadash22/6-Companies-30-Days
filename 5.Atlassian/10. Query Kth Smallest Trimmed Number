@@ -1,0 +1,40 @@
+class Solution {
+    public int[] smallestTrimmedNumbers(String[] nums, int[][] queries) {
+        int maxLen = nums[0].length();
+        int n = nums.length;
+        int[] result = new int[queries.length];
+
+        HashMap<Integer , int[]> sortedTrim = new HashMap<>();
+        for(int trim=1 ; trim<=maxLen ; trim++){
+            List<int[]> list = new ArrayList<>();
+
+            final int currTrim = trim;
+
+            for (int i = 0; i < nums.length; i++) {
+                String trimmed = nums[i].substring(maxLen - currTrim); // Get the trimmed string
+                list.add(new int[]{i, 0}); // Add index; value is unused in sorting
+            }
+
+            list.sort((a, b) -> {
+                String strA = nums[a[0]].substring(maxLen - currTrim);
+                String strB = nums[b[0]].substring(maxLen - currTrim);
+                int cmp = strA.compareTo(strB);
+                return cmp != 0 ? cmp : Integer.compare(a[0], b[0]);
+            });
+            
+            int[] sortedIndices = new int[n];
+            for (int i = 0; i < n; i++) {
+                sortedIndices[i] = list.get(i)[0];
+            }
+            sortedTrim.put(trim, sortedIndices);
+        }
+
+        for(int i=0 ; i<queries.length ; i++){
+            int k = queries[i][0];
+            int trim = queries[i][1];
+            result[i] = sortedTrim.get(trim)[k-1];
+        }
+
+        return result;
+    }
+}

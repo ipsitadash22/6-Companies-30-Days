@@ -1,0 +1,36 @@
+class Solution {
+    long[][] dp = new long[4001][1001];
+    int mod = 1_000_000_007;
+
+    public int numberOfWays(int startPos, int endPos, int k) {
+        for (int i = 0; i < 4001; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+        return (int) countWays(startPos, endPos, k);
+    }
+
+    public long countWays(int start, int end, int k) {
+        // If the remaining steps are insufficient to reach the target, return 0
+        if (Math.abs(start - end) > k) {
+            return 0;
+        }
+
+        // Base case
+        if (k == 0) {
+            return start == end ? 1 : 0;
+        }
+
+        // Check memoized results
+        if (dp[start + 1000][k] != -1) {
+            return dp[start + 1000][k];
+        }
+
+        // Recursive cases
+        long right = countWays(start + 1, end, k - 1);
+        long left = countWays(start - 1, end, k - 1);
+
+        // Store and return the result modulo mod
+        dp[start + 1000][k] = (right + left) % mod;
+        return dp[start + 1000][k];
+    }
+}

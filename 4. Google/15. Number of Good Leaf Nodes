@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int goodPairs = 0;
+    public int countPairs(TreeNode root, int distance) {
+        dfs(root , distance);
+        return goodPairs;
+    }
+    private List<Integer> dfs(TreeNode root , int distance){  
+        if(root == null){
+            return new ArrayList<>();
+        }
+
+        if(root.left == null && root.right == null){
+            List<Integer> list = new ArrayList<>();
+            list.add(1);
+            return list;
+        }
+
+        List<Integer> left = dfs(root.left , distance);
+        List<Integer> right = dfs(root.right , distance);
+
+        for(int l : left){
+            for(int r : right){
+                if(l+r <= distance){
+                    goodPairs++;
+                }
+            }
+        }
+
+        List<Integer> list = new ArrayList<>();
+        for(int nums : left){
+            list.add(nums+1);
+        }
+
+        for(int nums : right){
+            list.add(nums+1);
+        }
+
+        return list;
+    }
+}

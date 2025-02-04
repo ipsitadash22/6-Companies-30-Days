@@ -1,0 +1,17 @@
+class Solution {
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        Arrays.sort(asteroids);
+        long m = mass;
+
+        for(int num : asteroids){
+            if(m < num){
+                return false;
+            }else if(mass >= 10000){
+                return true;
+            }
+            m += num;
+        }
+
+        return true;
+    }
+}
