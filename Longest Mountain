@@ -1,0 +1,32 @@
+class Solution {
+    public int longestMountain(int[] arr) {
+        if (arr.length < 3) {
+            return 0;
+        }
+
+        int curr = 1;
+        int max = Integer.MIN_VALUE;
+
+        while (curr < arr.length - 1) {
+            if (arr[curr-1] < arr[curr] && arr[curr] > arr[curr+1]) {
+                int left = curr - 1;
+                int right = curr + 1;
+  
+                while (left > 0 && arr[left] > arr[left - 1]) {
+                    left--;
+                }
+
+                while (right < arr.length-1 && arr[right] > arr[right+1]) {
+                    right++;
+                }
+
+                max = Math.max(max, right - left + 1);
+                curr++;
+            }else{
+                curr++;
+            }
+        }
+
+        return max == Integer.MIN_VALUE ? 0 : max;
+    }
+}

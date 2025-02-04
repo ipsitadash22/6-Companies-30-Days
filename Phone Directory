@@ -1,0 +1,29 @@
+class Solution {
+    static ArrayList<ArrayList<String>> displayContacts(int n, String contact[], String s) {
+        // Use a TreeSet to automatically sort and remove duplicates
+        Set<String> contactSet = new TreeSet<>(Arrays.asList(contact));
+        
+        ArrayList<ArrayList<String>> list = new ArrayList<>();
+        int index = 1;
+
+        while (index <= s.length()) {
+            String t = s.substring(0, index);
+
+            ArrayList<String> sublist = new ArrayList<>();
+            for (String c : contactSet) { // Iterate over unique contacts
+                if (c.startsWith(t)) {
+                    sublist.add(c);
+                }
+            }
+
+            if (sublist.isEmpty()) {
+                sublist.add("0");
+            }
+            list.add(sublist);
+
+            index++;
+        }
+
+        return list;
+    }
+}

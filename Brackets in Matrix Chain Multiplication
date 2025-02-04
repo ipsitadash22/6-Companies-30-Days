@@ -1,0 +1,31 @@
+class Solution {
+    static String matrixChainOrder(int arr[]) {
+        // code here
+        int n = arr.length;
+        int[][] m = new int[n][n];
+        int[][] s = new int[n][n];
+        
+        for(int l=2 ; l<n ; l++){
+            for(int i=1 ; i<n-l+1 ; i++){
+                int j = i+l-1;
+                m[i][j] = Integer.MAX_VALUE;
+                for(int k=i ; k<j ; k++){
+                    int cost = arr[i-1]*arr[j]*arr[k] + m[i][k] + m[k+1][j];
+                    if(cost < m[i][j]){
+                        m[i][j] = cost;
+                        s[i][j] = k;
+                    }
+                }
+            }
+        }
+        
+        return ans(s , 1 , n-1);
+    }
+    static String ans(int[][] s , int i , int j){
+        if(i == j){
+            return String.valueOf((char)('A'+i-1));
+        }else{
+            return "(" + ans(s , i , s[i][j]) + ans(s , s[i][j]+1 , j) + ")";
+        }
+    }
+}
